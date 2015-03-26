@@ -12,9 +12,9 @@ import java.util.Date;
 public class MessagesDatatype {
 	String authorOfMsg;
 	String subjectOfMsg;
-	Date dateOfMsg;
-	URL urlOfActualMsgTxt;
-	
+	String dateOfMsg;
+	String strUrlOfActualMsgTxt;
+	int msgId;
 	MessagesDatatype(){		
 	}
 	
@@ -23,13 +23,15 @@ public class MessagesDatatype {
 	 * @param authorOfMsg
 	 * @param subjectOfMsg
 	 * @param dateOfMsg
-	 * @param urlOfActualMsgTxt
+	 * @param strUrlOfActualMsgTxt
 	 */
-	MessagesDatatype(String authorOfMsg,String subjectOfMsg,Date dateOfMsg,URL urlOfActualMsgTxt){
+	public MessagesDatatype(String authorOfMsg,String subjectOfMsg,String dateOfMsg,
+			String strUrlOfActualMsgTxt,int msgId){
 		this.authorOfMsg=authorOfMsg;
 		this.subjectOfMsg=subjectOfMsg;
 		this.dateOfMsg=dateOfMsg;
-		this.urlOfActualMsgTxt=urlOfActualMsgTxt;
+		this.strUrlOfActualMsgTxt=strUrlOfActualMsgTxt;
+		this.msgId=msgId;
 	}
 	
 	
@@ -45,19 +47,24 @@ public class MessagesDatatype {
 	public void setSubjectOfMsg(String subjectOfMsg) {
 		this.subjectOfMsg = subjectOfMsg;
 	}
-	public Date getDateOfMsg() {
+	public String getDateOfMsg() {
 		return dateOfMsg;
 	}
-	public void setDateOfMsg(Date dateOfMsg) {
+	public void setDateOfMsg(String dateOfMsg) {
 		this.dateOfMsg = dateOfMsg;
 	}
-	public URL getUrlOfActualMsgTxt() {
-		return urlOfActualMsgTxt;
+	public String getUrlOfActualMsgTxt() {
+		return strUrlOfActualMsgTxt;
 	}
-	public void setUrlOfActualMsgTxt(URL urlOfActualMsgTxt) {
-		this.urlOfActualMsgTxt = urlOfActualMsgTxt;
+	public void setUrlOfActualMsgTxt(String urlOfActualMsgTxt) {
+		this.strUrlOfActualMsgTxt = urlOfActualMsgTxt;
 	}
-	
+	public int getMsgId() {
+		return msgId;
+	}
+	public void setMsgId(int msgId) {
+		this.msgId = msgId;
+	}	
 	
 	
 	

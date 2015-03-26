@@ -1,5 +1,13 @@
 package pramati.wc.startup;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+
+import pramati.wc.datatypes.MonthAndLinkDatatype;
+import pramati.wc.utils.XmlHyperlinkExtractor;
+import pramati.wc.utils.XmlTagExtractor;
+
 /**
  * single threaded class which helps in basic functioning of web crawler used for downloading mails.
  * this must be extended by startup class in order to use the features present in helper class
@@ -10,24 +18,41 @@ public class WCstartupHelper {
 	/**
 	 *provide steps to crawl 
 	 * @param args
+	 * @throws Exception 
 	 */
-	public void runWebCrawler(String[] args){
+	
+	protected URL url=null;
+	protected String stringUrl=null;
+	private int yrNeedsToBeInspctd;
+	protected List<MonthAndLinkDatatype> mnthAndLink;
+	
+	public void runWebCrawler(String[] args) throws Exception{
+		this.stringUrl=args[1];
+		this.validateAndGetTxtfrmUrl(args[1]);
+		this.yrNeedsToBeInspctd=Integer.parseInt(args[2]);
 		prepareProcess();
 	}
 
-	private void prepareProcess() {
-		String urlInStringfrmt=null;
+	protected void prepareProcess() throws Exception {
 		String stringUrlWithYrbody=null;
-		extractYearFrmTag(urlInStringfrmt);
-		extractMnthHyprLnksFrmXml(stringUrlWithYrbody);
+		stringUrlWithYrbody=extractYrTagFrmUrlCntent();
+		extractMnthHyprLnksFrmXml(stringUrlWithYrbody);		
 	}
-
+	private void validateAndGetTxtfrmUrl(String urlString) throws Exception {
+		try {
+			this.url = new URL(urlString);
+		} catch (MalformedURLException e) {
+			throw new Exception("URL_NOT_PROPER");
+		}
+		
+	}
+	
+	private String extractYrTagFrmUrlCntent() throws Exception {
+		return XmlTagExtractor.getIntance().getXmlWithOnlyPassdStrngTag(this.url,String.valueOf(this.yrNeedsToBeInspctd));
+	}
+	
 	private void extractMnthHyprLnksFrmXml(String stringUrlWithYrbody) {
-		
-	}
-
-	private void extractYearFrmTag(String urlInStringfrmt) {
-		
+		this.mnthAndLink=XmlHyperlinkExtractor.getInstance().getHyprLynkFrmXmlForYear(stringUrlWithYrbody);
 	}
 	
 }

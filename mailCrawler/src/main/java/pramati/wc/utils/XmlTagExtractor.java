@@ -1,5 +1,7 @@
 package pramati.wc.utils;
 
+import java.net.URL;
+
 /**
  * singleton class
  * 
@@ -8,5 +10,30 @@ package pramati.wc.utils;
  *
  */
 public class XmlTagExtractor {
+	private static XmlTagExtractor instance;
+	private XmlTagExtractor(){}
+	
+	public static XmlTagExtractor getIntance() {
+		if(instance!=null)
+			return instance;
+		else
+			return instance=new XmlTagExtractor();
+	}
+
+	public String getXmlWithOnlyPassdStrngTag(URL url, String strToBeInspctd) throws Exception {
+		return getXmlWithOnlyPassdStrngTag(URLHelper.getInstance().getPageContentInTxtFrmt(url),strToBeInspctd);
+	}
+
+	public String getXmlWithOnlyPassdStrngTag(String pageContentInTxtFrmt,String yrNeedsToBeInspctd) {
+		String tagName=WCEnvironment.getInstance().getYearTagNameBegStrng()+" "+yrNeedsToBeInspctd;
+		int index=0;
+		int begIndex=0,endIndex=0;
+		if((index=pageContentInTxtFrmt.indexOf(tagName, index))!=-1){
+			begIndex=pageContentInTxtFrmt.indexOf('>',index);
+			index=pageContentInTxtFrmt.indexOf(WCEnvironment.getInstance().getEndingTagForYear(),begIndex);
+			endIndex=index+(WCEnvironment.getInstance().getEndingTagForYear()).length();
+		}
+		return pageContentInTxtFrmt.substring(begIndex, endIndex);				
+	}
 	
 }
