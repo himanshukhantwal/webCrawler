@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.List;
 
 import pramati.wc.datatypes.MonthAndLinkDatatype;
+import pramati.wc.utils.WCEnvironment;
 import pramati.wc.utils.XmlHyperlinkExtractor;
 import pramati.wc.utils.XmlTagExtractor;
 
@@ -23,7 +24,7 @@ public class WCstartupHelper {
 	
 	protected URL url=null;
 	protected String stringUrl=null;
-	private int yrNeedsToBeInspctd;
+	protected int yrNeedsToBeInspctd;
 	protected List<MonthAndLinkDatatype> mnthAndLink;
 	
 	public void runWebCrawler(String[] args) throws Exception{
@@ -48,7 +49,8 @@ public class WCstartupHelper {
 	}
 	
 	private String extractYrTagFrmUrlCntent() throws Exception {
-		return XmlTagExtractor.getIntance().getXmlWithOnlyPassdStrngTag(this.url,String.valueOf(this.yrNeedsToBeInspctd));
+		String tagName=WCEnvironment.getInstance().getYearTagNameBegStrng()+" "+String.valueOf(this.yrNeedsToBeInspctd);
+		return XmlTagExtractor.getIntance().getXmlWithOnlyPassdStrngTag(this.url,tagName);
 	}
 	
 	private void extractMnthHyprLnksFrmXml(String stringUrlWithYrbody) {

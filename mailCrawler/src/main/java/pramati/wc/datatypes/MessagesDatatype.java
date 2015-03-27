@@ -14,7 +14,6 @@ public class MessagesDatatype {
 	String subjectOfMsg;
 	String dateOfMsg;
 	String strUrlOfActualMsgTxt;
-	int msgId;
 	MessagesDatatype(){		
 	}
 	
@@ -26,12 +25,11 @@ public class MessagesDatatype {
 	 * @param strUrlOfActualMsgTxt
 	 */
 	public MessagesDatatype(String authorOfMsg,String subjectOfMsg,String dateOfMsg,
-			String strUrlOfActualMsgTxt,int msgId){
+			String strUrlOfActualMsgTxt){
 		this.authorOfMsg=authorOfMsg;
 		this.subjectOfMsg=subjectOfMsg;
 		this.dateOfMsg=dateOfMsg;
 		this.strUrlOfActualMsgTxt=strUrlOfActualMsgTxt;
-		this.msgId=msgId;
 	}
 	
 	
@@ -59,14 +57,6 @@ public class MessagesDatatype {
 	public void setUrlOfActualMsgTxt(String urlOfActualMsgTxt) {
 		this.strUrlOfActualMsgTxt = urlOfActualMsgTxt;
 	}
-	public int getMsgId() {
-		return msgId;
-	}
-	public void setMsgId(int msgId) {
-		this.msgId = msgId;
-	}	
-	
-	
 	
 	
 }

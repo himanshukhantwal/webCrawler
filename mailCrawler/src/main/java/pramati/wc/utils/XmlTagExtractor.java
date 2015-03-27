@@ -24,16 +24,16 @@ public class XmlTagExtractor {
 		return getXmlWithOnlyPassdStrngTag(URLHelper.getInstance().getPageContentInTxtFrmt(url),strToBeInspctd);
 	}
 
-	public String getXmlWithOnlyPassdStrngTag(String pageContentInTxtFrmt,String yrNeedsToBeInspctd) {
-		String tagName=WCEnvironment.getInstance().getYearTagNameBegStrng()+" "+yrNeedsToBeInspctd;
+	public String getXmlWithOnlyPassdStrngTag(String pageContentInTxtFrmt,String strToBeInspctd) {
+		
 		int index=0;
 		int begIndex=0,endIndex=0;
-		if((index=pageContentInTxtFrmt.indexOf(tagName, index))!=-1){
+		if((index=pageContentInTxtFrmt.indexOf(strToBeInspctd, index))!=-1){
 			begIndex=pageContentInTxtFrmt.indexOf('>',index);
-			index=pageContentInTxtFrmt.indexOf(WCEnvironment.getInstance().getEndingTagForYear(),begIndex);
-			endIndex=index+(WCEnvironment.getInstance().getEndingTagForYear()).length();
+			index=pageContentInTxtFrmt.indexOf(WCEnvironment.getInstance().getEndingTagForAtableEnd(),begIndex);
+			endIndex=index;
 		}
-		return pageContentInTxtFrmt.substring(begIndex, endIndex);				
+		return pageContentInTxtFrmt.substring(begIndex+1, endIndex);				
 	}
 	
 }

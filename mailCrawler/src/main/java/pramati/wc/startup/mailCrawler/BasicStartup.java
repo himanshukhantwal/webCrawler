@@ -4,7 +4,7 @@ package pramati.wc.startup.mailCrawler;
  * this class is the starting point of the crawler.
  *
  */
- public class BasicStartup {
+ abstract public class BasicStartup {
 	/**
 	 * processing start from main method. 
 	 * then it decide based on input which implementation to use for crawling(i.e. which class to use) 
@@ -16,15 +16,16 @@ package pramati.wc.startup.mailCrawler;
 	 * @throws Exception 
 	 */
     public static void main( String[] args ) throws Exception{
-    	BasicStartup startup;
-    	args[0]="pramati.wc.startup.WCStartup.class";
+    	args=new String[3];
+    	args[0]="pramati.wc.startup.WCStartup";
     	args[1]="http://mail-archives.apache.org/mod_mbox/maven-users/";
     	args[2]="2015";
+    	
+    	BasicStartup startup;
     	if(args.length<3)
     		throw new Exception("INVALID_NO_ARGUMENTS");
     	
     	startup=(BasicStartup) Class.forName(args[0]).newInstance();
-    	System.arraycopy(args,1, args, 0,args.length-1);
     	
     	startup.runWebCrawler(args);
     	
@@ -35,5 +36,5 @@ package pramati.wc.startup.mailCrawler;
      * web crawler
      * @throws Exception 
      */
- protected void runWebCrawler(String[] args) throws Exception{};
+ abstract protected void runWebCrawler(String[] args) throws Exception;
 }

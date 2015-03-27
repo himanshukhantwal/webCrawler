@@ -1,5 +1,6 @@
 package pramati.wc.startup;
 
+import java.net.URL;
 import java.util.Iterator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -10,6 +11,7 @@ import pramati.wc.processor.WorkerForMonths;
 import pramati.wc.startup.mailCrawler.BasicStartup;
 import pramati.wc.utils.URLHelper;
 import pramati.wc.utils.WCEnvironment;
+import pramati.wc.utils.WCFileHandler;
 
 /**
  * this class gives the web crawler implementation which can download mails of particular 
@@ -47,16 +49,17 @@ public class WCStartup extends BasicStartup{
 		protected void prepareProcess() throws Exception {
 			super.prepareProcess();// after this call "list of month url" is already gets prepared
 			
-			Iterator<MonthAndLinkDatatype> requests=this.mnthAndLink.iterator();
+			if(mnthAndLink.size()>0)
+			this.createBasicDirStrctr();
 			
+			Iterator<MonthAndLinkDatatype> requests=this.mnthAndLink.iterator();
 			while(requests.hasNext()){
 				MonthAndLinkDatatype singleRqst=requests.next();
 				WorkerForMonths requestProcessor=null;
 				try{
 				requestProcessor = new WorkerForMonths(
-						URLHelper.getInstance().getFullUrlFromHyperLink(
-								stringUrl, singleRqst.getHyprlynk()),
-						singleRqst.getMnthYear());
+						new URL(url, singleRqst.getHyprlynk()),
+						singleRqst.getMnthYear(),yrNeedsToBeInspctd);
 				}
 				catch(Exception e){
 					if(e.getMessage()=="PROBLEM_IN_HYPERLINK"){
@@ -68,6 +71,10 @@ public class WCStartup extends BasicStartup{
 				executor.execute(requestProcessor);
 				
 			}
+		}
+
+		private void createBasicDirStrctr() throws Exception {
+			WCFileHandler.getInstance().createDir("web_crawler_downloads/"+"Year_"+yrNeedsToBeInspctd);
 		}
 		
 	}

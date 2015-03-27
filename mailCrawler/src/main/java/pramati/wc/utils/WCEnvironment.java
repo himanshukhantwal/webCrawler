@@ -35,12 +35,16 @@ public class WCEnvironment {
 		return "Year";
 	}
 
-	public String getEndingTagForYear() {
+	public String getEndingTagForAtableEnd() {
 		return "</table>";
 	}
 
 	public String getMsgListTagNameForMonth() {
 		return "msglist\">";
+	}
+
+	public String getRawMsgTxtTag() {
+		return "class=\"raw\"";
 	}
 	
 	

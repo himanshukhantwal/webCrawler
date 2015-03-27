@@ -50,21 +50,4 @@ public class URLHelper {
 		return writer.toString();
 	}
 
-	public URL getFullUrlFromHyperLink(String stringUrl,String string) throws Exception {
-		String fullUrlStr=stringUrl+getDecodedURL(string);
-		try {
-			return new URL(fullUrlStr);
-		} catch (MalformedURLException e) {
-			throw new Exception("PROBLEM_IN_HYPERLINK");
-		}
-	}
-	
-	public String getDecodedURL(String encoded){
-		try {
-			return URLDecoder.decode(encoded, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			return encoded;
-		}
-	}
-
 }
