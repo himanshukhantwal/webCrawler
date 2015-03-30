@@ -58,5 +58,10 @@ public class MessagesDatatype {
 		this.strUrlOfActualMsgTxt = urlOfActualMsgTxt;
 	}
 	
+	@Override
+	public String toString() {
+		return "\nAuthor is:"+authorOfMsg+"\nsubject is:"+subjectOfMsg+"\ndate of message is: "+dateOfMsg;
+	}
+	
 	
 }

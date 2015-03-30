@@ -1,10 +1,15 @@
 package pramati.wc.startup.mailCrawler;
 
+import org.apache.log4j.Logger;
+
+
+
 /**
  * this class is the starting point of the crawler.
  *
  */
  abstract public class BasicStartup {
+	 private static final Logger log=Logger.getLogger(BasicStartup.class);
 	/**
 	 * processing start from main method. 
 	 * then it decide based on input which implementation to use for crawling(i.e. which class to use) 
@@ -16,6 +21,8 @@ package pramati.wc.startup.mailCrawler;
 	 * @throws Exception 
 	 */
     public static void main( String[] args ) throws Exception{
+    	Thread.currentThread().setName("Thread-main");
+    	
     	args=new String[3];
     	args[0]="pramati.wc.startup.WCStartup";
     	args[1]="http://mail-archives.apache.org/mod_mbox/maven-users/";
@@ -27,6 +34,9 @@ package pramati.wc.startup.mailCrawler;
     	
     	startup=(BasicStartup) Class.forName(args[0]).newInstance();
     	
+    	log.info("Crawler Implementation Name: " +args[0]);
+    	log.info("URL to which crawling will be done: "+ args[1]);
+    	log.info("YEAR is: "+args[2]);
     	startup.runWebCrawler(args);
     	
     }

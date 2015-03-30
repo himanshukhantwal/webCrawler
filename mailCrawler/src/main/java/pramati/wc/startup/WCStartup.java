@@ -1,10 +1,13 @@
 package pramati.wc.startup;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import org.apache.log4j.Logger;
 
 import pramati.wc.datatypes.MonthAndLinkDatatype;
 import pramati.wc.processor.WorkerForMonths;
@@ -21,6 +24,7 @@ import pramati.wc.utils.WCFileHandler;
  *
  */
 public class WCStartup extends BasicStartup{
+	private static final Logger log=Logger.getLogger(WCStartup.class);
 
 	@Override
 	protected void runWebCrawler(String[] args) throws Exception {
@@ -42,13 +46,14 @@ public class WCStartup extends BasicStartup{
 		ExecutorService executor;
 		@Override
 		public void runWebCrawler(String[] args) throws Exception{
-			executor=Executors.newFixedThreadPool(WCEnvironment.getInstance().getNoOfThreadsForWebCrawler());
+			int noOfThreads=WCEnvironment.getInstance().getNoOfThreadsForWebCrawler();
+			log.debug("No of Threads: "+noOfThreads);
+			executor=Executors.newFixedThreadPool(noOfThreads);
 			super.runWebCrawler(args);
 		}
 		
 		protected void prepareProcess() throws Exception {
 			super.prepareProcess();// after this call "list of month url" is already gets prepared
-			
 			if(mnthAndLink.size()>0)
 			this.createBasicDirStrctr();
 			
@@ -56,25 +61,23 @@ public class WCStartup extends BasicStartup{
 			while(requests.hasNext()){
 				MonthAndLinkDatatype singleRqst=requests.next();
 				WorkerForMonths requestProcessor=null;
-				try{
-				requestProcessor = new WorkerForMonths(
-						new URL(url, singleRqst.getHyprlynk()),
-						singleRqst.getMnthYear(),yrNeedsToBeInspctd);
+				
+				try {
+					requestProcessor = new WorkerForMonths(
+							new URL(url, singleRqst.getHyprlynk()),
+							singleRqst.getMnthYear(),yrNeedsToBeInspctd);
+				} catch (MalformedURLException e) {
+					log.error("PROBLEM_IN_URL: ", e);
 				}
-				catch(Exception e){
-					if(e.getMessage()=="PROBLEM_IN_HYPERLINK"){
-						continue;
-					}						
-					else
-						throw e;
-				}
+
+
 				executor.execute(requestProcessor);
 				
 			}
 		}
 
 		private void createBasicDirStrctr() throws Exception {
-			WCFileHandler.getInstance().createDir("web_crawler_downloads/"+"Year_"+yrNeedsToBeInspctd);
+			WCFileHandler.getInstance().createDir("web_crawler/downloads/"+"Year_"+yrNeedsToBeInspctd);
 		}
 		
 	}

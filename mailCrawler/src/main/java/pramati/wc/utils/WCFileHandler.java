@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
 public class WCFileHandler {
+	private static final Logger log=Logger.getLogger(WCFileHandler.class);
 	private static WCFileHandler instance=null;
 	private WCFileHandler(){}
 	
@@ -19,12 +22,11 @@ public class WCFileHandler {
 		File file=new File(dirPath);
 		if(!file.exists()){
 		if(file.mkdirs()){
-			System.out.println("Directory "+dirPath+" created successfully!!!");
+			log.info("Directory "+dirPath+" created successfully!!!");
 		}else{
-			throw new Exception("FAILED_TO_CREATE_DIRECTORY: please check if you have proper permissions");
+			log.error("FAILED_TO_CREATE_DIRECTORY: please check if you have proper permissions");
+			throw new Exception();
 			}
-		}else{
-			System.out.println("Directory "+dirPath+" Already Exists!!!");
 		}
 	}
 
@@ -38,14 +40,13 @@ public class WCFileHandler {
 		fw=new FileWriter(file);
 		fw.write(textTosave);
 		}catch(IOException e){
-			e.printStackTrace();
+			log.error("error occured while writing: file {"+fileName+"} in dir {"+dirPath+"}",e);
 		}finally{
 			try {
 				fw.flush();
 				fw.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error("error occured while flush: file {"+fileName+"} in dir {"+dirPath+"}",e);
 			}
 		}
 	}

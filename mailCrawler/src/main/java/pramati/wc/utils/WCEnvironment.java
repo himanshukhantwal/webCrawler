@@ -46,6 +46,14 @@ public class WCEnvironment {
 	public String getRawMsgTxtTag() {
 		return "class=\"raw\"";
 	}
+
+	public String getTagForPagination() {
+		return "class=\"pages\"";
+	}
+
+	public String getEndingTagForAthEnd() {
+		return "</th>";
+	}
 	
 	
 

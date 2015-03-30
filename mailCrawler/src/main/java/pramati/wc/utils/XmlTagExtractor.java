@@ -21,16 +21,20 @@ public class XmlTagExtractor {
 	}
 
 	public String getXmlWithOnlyPassdStrngTag(URL url, String strToBeInspctd) throws Exception {
-		return getXmlWithOnlyPassdStrngTag(URLHelper.getInstance().getPageContentInTxtFrmt(url),strToBeInspctd);
+		return getXmlWithOnlyPassdStrngTag(URLHelper.getInstance().getPageContentInTxtFrmt(url),strToBeInspctd,WCEnvironment.getInstance().getEndingTagForAtableEnd());
+	}
+	
+	public String getXmlWithOnlyPassdStrngTagAndDiffEnd(URL url, String strToBeInspctd) throws Exception {
+		return getXmlWithOnlyPassdStrngTag(URLHelper.getInstance().getPageContentInTxtFrmt(url),strToBeInspctd,WCEnvironment.getInstance().getEndingTagForAthEnd());
 	}
 
-	public String getXmlWithOnlyPassdStrngTag(String pageContentInTxtFrmt,String strToBeInspctd) {
+	private String getXmlWithOnlyPassdStrngTag(String pageContentInTxtFrmt,String strToBeInspctd,String end) {
 		
 		int index=0;
 		int begIndex=0,endIndex=0;
 		if((index=pageContentInTxtFrmt.indexOf(strToBeInspctd, index))!=-1){
 			begIndex=pageContentInTxtFrmt.indexOf('>',index);
-			index=pageContentInTxtFrmt.indexOf(WCEnvironment.getInstance().getEndingTagForAtableEnd(),begIndex);
+			index=pageContentInTxtFrmt.indexOf(end,begIndex);
 			endIndex=index;
 		}
 		return pageContentInTxtFrmt.substring(begIndex+1, endIndex);				

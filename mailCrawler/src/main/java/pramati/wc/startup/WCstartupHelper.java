@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import pramati.wc.datatypes.MonthAndLinkDatatype;
 import pramati.wc.utils.WCEnvironment;
 import pramati.wc.utils.XmlHyperlinkExtractor;
@@ -21,7 +23,7 @@ public class WCstartupHelper {
 	 * @param args
 	 * @throws Exception 
 	 */
-	
+	private static final Logger log=Logger.getLogger(WCstartupHelper.class);
 	protected URL url=null;
 	protected String stringUrl=null;
 	protected int yrNeedsToBeInspctd;
@@ -37,13 +39,15 @@ public class WCstartupHelper {
 	protected void prepareProcess() throws Exception {
 		String stringUrlWithYrbody=null;
 		stringUrlWithYrbody=extractYrTagFrmUrlCntent();
-		extractMnthHyprLnksFrmXml(stringUrlWithYrbody);		
+		extractMnthHyprLnksFrmXml(stringUrlWithYrbody);
+		log.debug("Extracted Months are :"+mnthAndLink);
 	}
-	private void validateAndGetTxtfrmUrl(String urlString) throws Exception {
+	private void validateAndGetTxtfrmUrl(String urlString) throws MalformedURLException  {
 		try {
 			this.url = new URL(urlString);
 		} catch (MalformedURLException e) {
-			throw new Exception("URL_NOT_PROPER");
+			log.fatal("URL_NOT_PROPER :"+urlString, e);
+			throw e;
 		}
 		
 	}

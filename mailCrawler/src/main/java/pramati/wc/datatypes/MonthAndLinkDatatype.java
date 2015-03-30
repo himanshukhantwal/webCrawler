@@ -32,5 +32,10 @@ public class MonthAndLinkDatatype {
 		this.hyprlynk = hyprlynk;
 	}
 	
+	@Override
+	public String toString() {
+		return "\n Month And year is :"+mnthYear+"\nHyperlink is "+hyprlynk;
+	}
+	
 	
 }

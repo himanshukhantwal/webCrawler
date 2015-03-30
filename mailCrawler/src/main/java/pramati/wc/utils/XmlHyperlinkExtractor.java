@@ -1,7 +1,11 @@
 package pramati.wc.utils;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.w3c.dom.ls.LSInput;
@@ -97,6 +101,31 @@ public class XmlHyperlinkExtractor {
 	    }
 	    else
 	    	return null;
+	}
+
+	public Set<String> getPaginationHyperLynk(URL urlForMnth) {
+		Set<String> paginatnHyprlnk=new LinkedHashSet<String>();
+		String stringWithPginatnHyprlnk=null;
+		String rawPage=null;
+		int index=0;
+		try {
+			stringWithPginatnHyprlnk=XmlTagExtractor.getIntance().getXmlWithOnlyPassdStrngTagAndDiffEnd(urlForMnth, WCEnvironment.getInstance().getTagForPagination());			
+			rawPage=stringWithPginatnHyprlnk;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		while ((index = stringWithPginatnHyprlnk.indexOf("<a ", index)) != -1){			
+			if((index = stringWithPginatnHyprlnk.indexOf("<a ", index)) == -1) break;
+		    if ((index = stringWithPginatnHyprlnk.indexOf("href", index)) == -1) break;
+		    if ((index = stringWithPginatnHyprlnk.indexOf("=", index)) == -1) break;
+		    String remaining = rawPage.substring(++index);
+		    StringTokenizer st 
+				= new StringTokenizer(remaining, "\t\n\r\"'>#");
+		    String strLink = st.nextToken();
+		    paginatnHyprlnk.add(strLink);
+		}
+		
+		return paginatnHyprlnk;
 	}
 	
 	
