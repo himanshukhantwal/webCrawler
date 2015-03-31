@@ -37,5 +37,14 @@ public class MonthAndLinkDatatype {
 		return "\n Month And year is :"+mnthYear+"\nHyperlink is "+hyprlynk;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof MonthAndLinkDatatype){
+		MonthAndLinkDatatype monthAndLinkDatatype=(MonthAndLinkDatatype) obj;
+		return (this.mnthYear.equals(monthAndLinkDatatype.mnthYear) && this.hyprlynk.equals(monthAndLinkDatatype.hyprlynk));
+		}else{
+		return false;}
+	}
+	
 	
 }

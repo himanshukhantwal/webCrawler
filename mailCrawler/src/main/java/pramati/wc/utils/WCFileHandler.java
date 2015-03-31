@@ -32,7 +32,7 @@ public class WCFileHandler {
 
 	public void createFileAndWriteTxt(String fileName, String dirPath,
 			String textTosave) {
-		fileName=fileName.replaceAll("/", "or");
+		fileName=fileName.replaceAll("/", "-or-");
 		FileWriter fw=null;
 		File file=new File(dirPath,fileName);
 		try{

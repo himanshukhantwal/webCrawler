@@ -63,5 +63,17 @@ public class MessagesDatatype {
 		return "\nAuthor is:"+authorOfMsg+"\nsubject is:"+subjectOfMsg+"\ndate of message is: "+dateOfMsg;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof MessagesDatatype){
+			MessagesDatatype messagesDatatype=(MessagesDatatype) obj;
+			return this.authorOfMsg.equals(messagesDatatype.authorOfMsg)
+					&& this.dateOfMsg.equals(messagesDatatype.dateOfMsg)
+						&& this.subjectOfMsg.equals(messagesDatatype.subjectOfMsg)
+									&& this.strUrlOfActualMsgTxt.equals(messagesDatatype.strUrlOfActualMsgTxt);
+		}else
+			return false;
+	}
+	
 	
 }

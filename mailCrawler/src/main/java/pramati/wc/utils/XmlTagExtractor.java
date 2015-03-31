@@ -28,7 +28,7 @@ public class XmlTagExtractor {
 		return getXmlWithOnlyPassdStrngTag(URLHelper.getInstance().getPageContentInTxtFrmt(url),strToBeInspctd,WCEnvironment.getInstance().getEndingTagForAthEnd());
 	}
 
-	private String getXmlWithOnlyPassdStrngTag(String pageContentInTxtFrmt,String strToBeInspctd,String end) {
+	protected String getXmlWithOnlyPassdStrngTag(String pageContentInTxtFrmt,String strToBeInspctd,String end) {
 		
 		int index=0;
 		int begIndex=0,endIndex=0;
