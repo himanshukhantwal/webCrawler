@@ -37,7 +37,10 @@ public class XmlTagExtractor {
 			index=pageContentInTxtFrmt.indexOf(end,begIndex);
 			endIndex=index;
 		}
-		return pageContentInTxtFrmt.substring(begIndex+1, endIndex);				
+		if(begIndex!=0 && endIndex!=0)
+		return pageContentInTxtFrmt.substring(begIndex+1, endIndex);
+		else
+			return "";
 	}
 	
 }

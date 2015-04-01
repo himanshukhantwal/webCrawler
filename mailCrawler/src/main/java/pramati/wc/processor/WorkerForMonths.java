@@ -70,6 +70,7 @@ public class WorkerForMonths implements Runnable {
 	 */
 	private void skipAlreadyDownloadedMsgs() {
 		List<MessagesDatatype> recoveryMapList=FailureRecovery.getInstance().getRecoveryMap(month);
+		if(recoveryMapList!=null && recoveryMapList.size()>0)
 		this.messageList.removeAll(recoveryMapList);
 	}
 
@@ -148,6 +149,12 @@ public class WorkerForMonths implements Runnable {
 								
 		WCFileHandler.getInstance().createFileAndWriteTxt(fileName,dirBySubjct,textTosave);
 	}
+	
+	/**
+	 * adding msg in recovery folder which will help in failure recovery
+	 * @param snglMsg
+	 * @throws Exception
+	 */
 	private void addMsgCompletedInRecovery(MessagesDatatype snglMsg) throws Exception {
 		String[] tokens=(month.trim()).split(" ");
 		String dirForRecFile = "web_crawler/Recovery/" + "Year_" + year

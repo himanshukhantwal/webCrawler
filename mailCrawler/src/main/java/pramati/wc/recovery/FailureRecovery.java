@@ -27,7 +27,7 @@ public class FailureRecovery {
 	public void createRecoveryMap(int yrNeedsToBeInspctd){
 		this.yrNeedsToBeInspctd=yrNeedsToBeInspctd;
 		String dirForRecMnth="web_crawler/Recovery/"+"Year_"+yrNeedsToBeInspctd;
-		File[] dirList = WCFileHandler.getFileListFrmDir(dirForRecMnth);
+		File[] dirList = WCFileHandler.getInstance().getFileListFrmDir(dirForRecMnth);
 		for(File dirEntry:dirList){
 				if(dirEntry.isDirectory()){
 					populateMapForMnth(dirEntry);
@@ -48,7 +48,7 @@ public class FailureRecovery {
 
 	private ArrayList<MessagesDatatype> getFileListUnderMnth(String mnth) {
 		String dirForFileInMnthDir ="web_crawler/Recovery/"+"Year_"+yrNeedsToBeInspctd+"/Month_"+mnth;
-		File[] fileList = WCFileHandler.getFileListFrmDir(dirForFileInMnthDir);
+		File[] fileList = WCFileHandler.getInstance().getFileListFrmDir(dirForFileInMnthDir);
 		ArrayList<MessagesDatatype> al=new ArrayList<MessagesDatatype>();
 		for(File fileEntry:fileList){
 			if(fileEntry.isFile()){

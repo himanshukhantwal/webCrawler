@@ -1,6 +1,10 @@
 package pramati.wc.startup.mailCrawler;
 
+import java.util.Scanner;
+
 import org.apache.log4j.Logger;
+
+import pramati.wc.utils.WCEnvironment;
 
 
 
@@ -22,11 +26,7 @@ import org.apache.log4j.Logger;
 	 */
     public static void main( String[] args ) throws Exception{
     	Thread.currentThread().setName("Thread-main");
-    	
-    	args=new String[3];
-    	args[0]="pramati.wc.startup.WCStartup";
-    	args[1]="http://mail-archives.apache.org/mod_mbox/maven-users/";
-    	args[2]="2015";
+    	args=getUserInput();
     	
     	BasicStartup startup;
     	if(args.length<3)
@@ -41,7 +41,19 @@ import org.apache.log4j.Logger;
     	
     }
     
-    /**
+    private static String[] getUserInput() {
+        @SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+    	String[] inputStrArray=new String[3];
+    	inputStrArray[0] = WCEnvironment.getInstance().getCrawlerImplementation();
+    	System.out.println("Enter Your URL:");
+    	inputStrArray[1]=scanner.nextLine();
+    	System.out.println("Enter Year:");
+    	inputStrArray[2]=scanner.nextLine();
+    	return inputStrArray;
+	}
+
+	/**
      * this method provides the kick start to the crawler and this must be implemented by each 
      * web crawler
      * @throws Exception 

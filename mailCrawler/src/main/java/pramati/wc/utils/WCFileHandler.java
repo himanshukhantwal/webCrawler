@@ -64,12 +64,18 @@ public class WCFileHandler {
 		
 	}
 
-	public static File[] getFileListFrmDir(String dirForRec) {
+	public File[] getFileListFrmDir(String dirForRec) {
 		File file=new File(dirForRec);
 		if(file.exists()){
 			return file.listFiles();
 		}else
 			return new File[0];
+	}
+
+	public boolean renameFile(String oldFileName, String newFileName) {
+		File oldFile=new File(oldFileName);
+		File newFile=new File(newFileName);
+		return oldFile.renameTo(newFile);				
 	}
 	
 }

@@ -78,6 +78,9 @@ public class XmlHyperlinkExtractor {
 		    String subjectOfMsg=getNextTagTitle(index,msgBody);
 		    if ((index = msgBody.indexOf("class=\"date\"", index)) == -1) break;
 		    String dateOfMsg=getNextTagTitle(index,msgBody);
+		    if(subjectOfMsg.length()>70){
+		    	subjectOfMsg=subjectOfMsg.substring(0, 70);
+		    }
 		    MessagesDatatype msg=new MessagesDatatype(authorOfMsg, subjectOfMsg, dateOfMsg, strLink);
 		    list.add(msg);
 		}		

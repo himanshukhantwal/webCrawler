@@ -2,6 +2,8 @@ package pramati.wc.startup;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -90,6 +92,12 @@ public class WCStartup extends BasicStartup{
 				log.error("Finished with error :", e);
 			}
 			log.info("Process finished Successfully :) !!!!!!!");
+			Date date=Calendar.getInstance().getTime();
+			if(!WCFileHandler.getInstance().renameFile("web_crawler/log/logFile.log","web_crawler/log/logFile_"+yrNeedsToBeInspctd+"_"+date.toString()+".log")){
+				log.info("Log folder is: "+"./web_crawler/log/logFile.log");
+			}else{
+				log.info("Log folder is: "+"web_crawler/log/logFile_"+yrNeedsToBeInspctd+"_"+date.toString()+".log");
+			}
 			
 		}
 

@@ -28,7 +28,12 @@ public class WCEnvironment {
 
 	public int getNoOfThreadsForWebCrawler() {
 		// TODO add logic for retrieving value from property file
-		return 4;
+		return 8;
+	}
+	
+	public String getCrawlerImplementation(){
+		// TODO add logic for retrieving value from property file
+		return "pramati.wc.startup.WCStartup";
 	}
 
 	public String getYearTagNameBegStrng() {
