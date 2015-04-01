@@ -2,14 +2,17 @@ package pramati.wc.processor;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
 import pramati.wc.datatypes.MessagesDatatype;
+import pramati.wc.recovery.FailureRecovery;
 import pramati.wc.utils.URLHelper;
 import pramati.wc.utils.WCEnvironment;
 import pramati.wc.utils.WCFileHandler;
@@ -42,7 +45,8 @@ public class WorkerForMonths implements Runnable {
 				
 				messageList=getMsgUrls(this.urlForMnth);
 				Set<String> allPagesHyperLynk=XmlHyperlinkExtractor.getInstance().getPaginationHyperLynk(urlForMnth);
-				this.addMsgUrlFromAllPages(allPagesHyperLynk);	
+				this.addMsgUrlFromAllPages(allPagesHyperLynk);
+				this.skipAlreadyDownloadedMsgs();
 				log.info("No of Messages in month {"+month+"} is :"+messageList.size());
 				if(messageList.size()>0)
 				createDirForMnth();
@@ -59,6 +63,14 @@ public class WorkerForMonths implements Runnable {
 			log.error("failed download msg for month {"+month+"}",e);
 		}
 		
+	}
+	
+	/**
+	 * this method helps in handling failure recovery
+	 */
+	private void skipAlreadyDownloadedMsgs() {
+		List<MessagesDatatype> recoveryMapList=FailureRecovery.getInstance().getRecoveryMap(month);
+		this.messageList.removeAll(recoveryMapList);
 	}
 
 	private void addMsgUrlFromAllPages(Set<String> allPagesHyperLynk) throws Exception {
@@ -77,6 +89,7 @@ public class WorkerForMonths implements Runnable {
 	private void createDirForMnth() throws Exception {
 		String[] tokens=(month.trim()).split(" ");
 		WCFileHandler.getInstance().createDir("web_crawler/downloads/"+"Year_"+year+"/Month_"+tokens[0]);
+		WCFileHandler.getInstance().createDir("web_crawler/Recovery/"+"Year_"+year+"/Month_"+tokens[0]);
 	}
 
 	private List<MessagesDatatype> getMsgUrls(URL url) throws Exception {
@@ -100,6 +113,7 @@ public class WorkerForMonths implements Runnable {
 			String rawMsgText=getMsgTxt(fullmsgUrl);
 			
 			saveMsgTextInfile(snglMsg,rawMsgText);
+			addMsgCompletedInRecovery(snglMsg);
 		} catch (Exception e) {
 			log.error("Problem saving msg"+snglMsg,e);
 		}
@@ -126,13 +140,21 @@ public class WorkerForMonths implements Runnable {
 		String changedSubject=((snglMsg.getSubjectOfMsg()).trim().replaceAll("Re: |RE: ","")).trim();
 		
 		//creating dir for each subject
-		String dirBySubjct="web_crawler/downloads/"+"Year_"+year+"/Month_"+tokens[0]+"/"+(changedSubject.replaceAll(" ","_")).replaceAll("/", "or");
+		String dirBySubjct="web_crawler/downloads/"+"Year_"+year+"/Month_"+tokens[0]+"/"+changedSubject.replaceAll("/", "-or-");
 		WCFileHandler.getInstance().createDir(dirBySubjct);
 		
-		String fileName=snglMsg.getAuthorOfMsg().replaceAll(" ", "_")+"\\\\"+
-							snglMsg.getDateOfMsg().replaceAll(" ", "_");
+		String fileName=snglMsg.getAuthorOfMsg()+"-And-"+
+							snglMsg.getDateOfMsg();
 								
 		WCFileHandler.getInstance().createFileAndWriteTxt(fileName,dirBySubjct,textTosave);
+	}
+	private void addMsgCompletedInRecovery(MessagesDatatype snglMsg) throws Exception {
+		String[] tokens=(month.trim()).split(" ");
+		String dirForRecFile = "web_crawler/Recovery/" + "Year_" + year
+				+ "/Month_" + tokens[0];
+		String recFileName=snglMsg.getSubjectOfMsg() + "-And-" + snglMsg.getAuthorOfMsg() + "-And-"
+				+ snglMsg.getDateOfMsg();
+		WCFileHandler.getInstance().createFile(recFileName,dirForRecFile);
 	}
 
 

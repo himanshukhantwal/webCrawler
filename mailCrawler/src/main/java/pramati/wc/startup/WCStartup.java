@@ -6,11 +6,13 @@ import java.util.Iterator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
 import pramati.wc.datatypes.MonthAndLinkDatatype;
 import pramati.wc.processor.WorkerForMonths;
+import pramati.wc.recovery.FailureRecovery;
 import pramati.wc.startup.mailCrawler.BasicStartup;
 import pramati.wc.utils.URLHelper;
 import pramati.wc.utils.WCEnvironment;
@@ -57,6 +59,9 @@ public class WCStartup extends BasicStartup{
 			if(mnthAndLink.size()>0)
 			this.createBasicDirStrctr();
 			
+			if(WCEnvironment.getInstance().isRunningInRecoveryMode()){
+				FailureRecovery.getInstance().createRecoveryMap(yrNeedsToBeInspctd);
+			}
 			Iterator<MonthAndLinkDatatype> requests=this.mnthAndLink.iterator();
 			while(requests.hasNext()){
 				MonthAndLinkDatatype singleRqst=requests.next();
@@ -74,10 +79,23 @@ public class WCStartup extends BasicStartup{
 				executor.execute(requestProcessor);
 				
 			}
+			finishExecution();
+		}
+
+		private void finishExecution() {
+			this.executor.shutdown();
+			try {
+				this.executor.awaitTermination(Integer.MAX_VALUE,TimeUnit.MINUTES);
+			} catch (InterruptedException e) {
+				log.error("Finished with error :", e);
+			}
+			log.info("Process finished Successfully :) !!!!!!!");
+			
 		}
 
 		private void createBasicDirStrctr() throws Exception {
 			WCFileHandler.getInstance().createDir("web_crawler/downloads/"+"Year_"+yrNeedsToBeInspctd);
+			WCFileHandler.getInstance().createDir("web_crawler/Recovery/"+"Year_"+yrNeedsToBeInspctd);
 		}
 		
 	}

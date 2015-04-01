@@ -69,8 +69,7 @@ public class MessagesDatatype {
 			MessagesDatatype messagesDatatype=(MessagesDatatype) obj;
 			return this.authorOfMsg.equals(messagesDatatype.authorOfMsg)
 					&& this.dateOfMsg.equals(messagesDatatype.dateOfMsg)
-						&& this.subjectOfMsg.equals(messagesDatatype.subjectOfMsg)
-									&& this.strUrlOfActualMsgTxt.equals(messagesDatatype.strUrlOfActualMsgTxt);
+						&& this.subjectOfMsg.equals(messagesDatatype.subjectOfMsg);
 		}else
 			return false;
 	}

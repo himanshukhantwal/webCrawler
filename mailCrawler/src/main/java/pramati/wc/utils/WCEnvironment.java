@@ -54,6 +54,10 @@ public class WCEnvironment {
 	public String getEndingTagForAthEnd() {
 		return "</th>";
 	}
+
+	public boolean isRunningInRecoveryMode() {
+		return true;
+	}
 	
 	
 

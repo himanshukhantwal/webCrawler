@@ -1,5 +1,6 @@
 package pramati.wc.utils;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class WCFileHandler {
 		File file=new File(dirPath);
 		if(!file.exists()){
 		if(file.mkdirs()){
-			log.info("Directory "+dirPath+" created successfully!!!");
+			log.debug("Directory "+dirPath+" created successfully!!!");
 		}else{
 			log.error("FAILED_TO_CREATE_DIRECTORY: please check if you have proper permissions");
 			throw new Exception();
@@ -33,22 +34,42 @@ public class WCFileHandler {
 	public void createFileAndWriteTxt(String fileName, String dirPath,
 			String textTosave) {
 		fileName=fileName.replaceAll("/", "-or-");
-		FileWriter fw=null;
+		BufferedWriter bw=null;
 		File file=new File(dirPath,fileName);
 		try{
 		file.createNewFile();
-		fw=new FileWriter(file);
-		fw.write(textTosave);
+		bw=new BufferedWriter(new FileWriter(file));
+		bw.write(textTosave);
+		log.info("--File {"+fileName+"} is downloaded successfully--");
 		}catch(IOException e){
 			log.error("error occured while writing: file {"+fileName+"} in dir {"+dirPath+"}",e);
 		}finally{
 			try {
-				fw.flush();
-				fw.close();
+				bw.flush();
+				bw.close();
 			} catch (IOException e) {
 				log.error("error occured while flush: file {"+fileName+"} in dir {"+dirPath+"}",e);
 			}
 		}
+	}
+
+	public void createFile(String recFileName, String dirForRecFile) {
+		recFileName=recFileName.replaceAll("/", "-or-");
+		File file=new File(dirForRecFile,recFileName);
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+			log.error("error occured while creating: file {"+recFileName+"} in dir {"+dirForRecFile+"}",e);
+		}
+		
+	}
+
+	public static File[] getFileListFrmDir(String dirForRec) {
+		File file=new File(dirForRec);
+		if(file.exists()){
+			return file.listFiles();
+		}else
+			return new File[0];
 	}
 	
 }
