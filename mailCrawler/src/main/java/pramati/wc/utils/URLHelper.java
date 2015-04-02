@@ -40,7 +40,7 @@ public class URLHelper {
 		try {
 			reader=new BufferedInputStream(url.openStream());
 		} catch (IOException e) {
-			throw new Exception("PROBLEM_IN_URL_READING");
+			throw new Exception("PROBLEM_IN_URL_READING",e);
 		}
 		
 		Writer writer=new StringWriter();

@@ -25,8 +25,7 @@ public class WCFileHandler {
 		if(file.mkdirs()){
 			log.debug("Directory "+dirPath+" created successfully!!!");
 		}else{
-			log.error("FAILED_TO_CREATE_DIRECTORY: please check if you have proper permissions");
-			throw new Exception();
+			//log.error("FAILED_TO_CREATE_DIRECTORY: please check if you have proper permissions");
 			}
 		}
 	}

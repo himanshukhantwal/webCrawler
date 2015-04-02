@@ -35,6 +35,10 @@ public class WCEnvironment {
 		// TODO add logic for retrieving value from property file
 		return "pramati.wc.startup.WCStartup";
 	}
+	
+	public boolean isRunningInRecoveryMode() {
+		return true;
+	}
 
 	public String getYearTagNameBegStrng() {
 		return "Year";
@@ -60,8 +64,9 @@ public class WCEnvironment {
 		return "</th>";
 	}
 
-	public boolean isRunningInRecoveryMode() {
-		return true;
+	public int getNoOfMsgDownloaderThread() {
+		// TODO Auto-generated method stub
+		return 10;
 	}
 	
 	
